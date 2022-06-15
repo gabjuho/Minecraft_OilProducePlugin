@@ -1,0 +1,5 @@
+name: OilProducePlugin
+version: 1.17.1
+author: gabjuho
+main: com.gabjuho.oilproduceplugin.Main
+api-version: 1.17
