@@ -18,10 +18,10 @@ public class YamlManager {
     private YamlManager(Main plugin) // 생성자 막아놓음 (싱글톤 패턴으로 인한)
     {
         this.plugin = plugin;
-        saveDefaultConfig();
+        saveDefaultLoc();
     }
 
-    public void reloadConfig() // 데이터 리로드
+    public void reloadLoc() // 데이터 리로드
     {
         if(this.locFile == null)
             this.locFile = new File(this.plugin.getDataFolder(), "loc.yml");
@@ -45,12 +45,12 @@ public class YamlManager {
     public FileConfiguration getLoc()
     {
         if(this.loc == null)
-            reloadConfig();
+            reloadLoc();
 
         return this.loc;
     }
 
-    public void saveConfig() // 데이터 저장
+    public void saveLoc() // 데이터 저장
     {
         if(this.loc == null || this.locFile == null)
             return;
@@ -64,7 +64,7 @@ public class YamlManager {
         }
     }
 
-    public void saveDefaultConfig() // 데이터 디폴트 저장
+    public void saveDefaultLoc() // 데이터 디폴트 저장
     {
         if(this.locFile == null)
             this.locFile = new File(this.plugin.getDataFolder(), "loc.yml");
