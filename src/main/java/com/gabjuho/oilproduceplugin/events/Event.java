@@ -106,13 +106,19 @@ public class Event implements Listener {
     void onBreakOilProducer(BlockBreakEvent event) {
 
         Player player = event.getPlayer();
+
         if (event.getBlock().getType() == Material.HOPPER || event.getBlock().getType() == Material.DROPPER || event.getBlock().getType() == Material.CRAFTING_TABLE) {
             for (String uuid : yamlManager.getLoc().getKeys(true)) {
                 if (event.getBlock().getLocation().getBlockX() == yamlManager.getLoc().getLocation(uuid).getBlockX() && event.getBlock().getLocation().getBlockZ() == yamlManager.getLoc().getLocation(uuid).getBlockZ()) {
                     if (event.getBlock().getLocation().getBlockY() == yamlManager.getLoc().getLocation(uuid).getBlockY() || event.getBlock().getLocation().getBlockY() == yamlManager.getLoc().getLocation(uuid).getBlockY() + 1 || event.getBlock().getLocation().getBlockY() == yamlManager.getLoc().getLocation(uuid).getBlockY() + 2) {
-                        if(player.getUniqueId().toString().equals(uuid))
+                        if(player.getUniqueId().toString().equals(uuid)){
+                            player.sendMessage(ChatColor.GREEN + "플레이어의 석유 생성기가 파괴되었습니다.");
+                            yamlManager.getLoc().set(player.getUniqueId().toString(),null);
+                            yamlManager.saveLoc();
                             return;
+                        }
                         event.setCancelled(true);
+                        player.sendMessage(ChatColor.RED + "다른 플레이어의 석유 생성기이므로, 파괴가 불가능합니다.");
                     }
                 }
             }
