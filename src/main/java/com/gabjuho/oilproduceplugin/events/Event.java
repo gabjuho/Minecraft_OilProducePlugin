@@ -5,15 +5,15 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Event implements Listener {
@@ -64,13 +64,13 @@ public class Event implements Listener {
 
     @EventHandler
     void onInsertCoalEvent(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-
-        if (event.getClickedInventory() == null || event.getCurrentItem() == null)
+        Player player = (Player)event.getWhoClicked();
+        if(event.getCursor() == null || event.getClickedInventory() == null)
             return;
 
-        if (event.getInventory().getType() == InventoryType.HOPPER && event.getCurrentItem().getType() == Material.COAL) {
-            player.sendMessage(ChatColor.GREEN + "작동됨");
+        if(event.getClickedInventory().getType() == InventoryType.HOPPER && event.getCursor().getType() == Material.COAL){
+            if(Objects.equals(yamlManager.getLoc().getLocation(player.getUniqueId().toString()), event.getClickedInventory().getLocation()))
+                player.sendMessage("작동완료");
         }
     }
 
