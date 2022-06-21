@@ -1,10 +1,8 @@
 package com.gabjuho.oilproduceplugin.events;
 
+import com.gabjuho.oilproduceplugin.Main;
 import com.gabjuho.oilproduceplugin.YamlManager;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.Objects;
@@ -69,8 +69,11 @@ public class Event implements Listener {
             return;
 
         if(event.getClickedInventory().getType() == InventoryType.HOPPER && event.getCursor().getType() == Material.COAL){
-            if(Objects.equals(yamlManager.getLoc().getLocation(player.getUniqueId().toString()), event.getClickedInventory().getLocation()))
-                player.sendMessage("작동완료");
+            if(Objects.equals(yamlManager.getLoc().getLocation(player.getUniqueId().toString()), event.getClickedInventory().getLocation())){
+                Bukkit.getScheduler().runTask(Main.getPlugin(Main.class),()->useCoalInOilProducer(event.getClickedInventory()));
+                player.sendMessage(ChatColor.GREEN + "석유 생성기가 가동되었습니다. 30분 후에 석유가 생성됩니다."); //후차에 석유 생성기가 가동중일 때, 석유를 못넣게 해야함. 혹은 자동으로 석탄이 있으면 빨아먹게 하던지
+                player.sendMessage(ChatColor.GRAY + "(30분 후에 플레이어가 접속되어 있지 않는 경우 석유를 받지 못합니다.)");
+            }
         }
     }
 
@@ -112,7 +115,7 @@ public class Event implements Listener {
                 if (event.getBlock().getLocation().getBlockX() == yamlManager.getLoc().getLocation(uuid).getBlockX() && event.getBlock().getLocation().getBlockZ() == yamlManager.getLoc().getLocation(uuid).getBlockZ()) {
                     if (event.getBlock().getLocation().getBlockY() == yamlManager.getLoc().getLocation(uuid).getBlockY() || event.getBlock().getLocation().getBlockY() == yamlManager.getLoc().getLocation(uuid).getBlockY() + 1 || event.getBlock().getLocation().getBlockY() == yamlManager.getLoc().getLocation(uuid).getBlockY() + 2) {
                         if(player.getUniqueId().toString().equals(uuid)){
-                            player.sendMessage(ChatColor.GREEN + "플레이어의 석유 생성기가 파괴되었습니다.");
+                            player.sendMessage(ChatColor.GRAY + "플레이어의 석유 생성기가 파괴되었습니다.");
                             yamlManager.getLoc().set(player.getUniqueId().toString(),null);
                             yamlManager.saveLoc();
                             return;
@@ -122,6 +125,15 @@ public class Event implements Listener {
                     }
                 }
             }
+        }
+    }
+
+    private void useCoalInOilProducer(Inventory hopper){
+        for(ItemStack item : hopper.getContents()){
+            if(item == null)
+                continue;
+            if(item.getType() == Material.COAL)
+                item.setAmount(item.getAmount() - 1);
         }
     }
 
