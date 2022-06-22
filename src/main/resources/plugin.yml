@@ -3,3 +3,7 @@ version: 1.17.1
 author: gabjuho
 main: com.gabjuho.oilproduceplugin.Main
 api-version: 1.17
+commands:
+  석유시간:
+    description: 석유 생성까지 남은 시간을 알려주는 커맨드
+    usage: /<command>

@@ -1,5 +1,6 @@
 package com.gabjuho.oilproduceplugin;
 
+import com.gabjuho.oilproduceplugin.commands.Command;
 import com.gabjuho.oilproduceplugin.events.Event;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,6 +25,8 @@ public class Main extends JavaPlugin {
         }
 
         getServer().getPluginManager().registerEvents(new Event(), this);
+        getCommand("석유시간").setExecutor(new Command());
+
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[OilProducePlugin]: Plugin is enabled!");
     }
 
