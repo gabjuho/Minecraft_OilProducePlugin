@@ -90,7 +90,7 @@ public class Event implements Listener {
             }
         } else if (event.getClickedInventory().getType() == InventoryType.HOPPER && event.getCursor().getType() == Material.COAL && event.getCursor().getAmount() != 1 && !event.getCursor().hasItemMeta()) {
             event.setCancelled(true);
-            player.sendMessage(ChatColor.RED + "석유를 하나만 넣어주세요.");
+            player.sendMessage(ChatColor.RED + "석탄을 하나만 넣어주세요.");
         }
     }
 
