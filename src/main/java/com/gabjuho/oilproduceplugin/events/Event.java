@@ -73,8 +73,8 @@ public class Event implements Listener {
                 if(!PlayerOilProducerManager.getOilCoolTime().containsKey(player.getUniqueId())) {
                     Bukkit.getScheduler().runTask(Main.getPlugin(Main.class),()->useCoalInOilProducer(event.getClickedInventory()));
                     PlayerOilProducerManager.AddOilCoolTime(player);
-                    BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getPlugin(Main.class), () -> PlayerOilProducerManager.ConsumingOilCoolTime(player), 0, 20);
-                    PlayerOilProducerManager.AddCoolTimeTask(player,task);
+                    BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getPlugin(Main.class), () -> PlayerOilProducerManager.ConsumingOilCoolTime(player.getUniqueId()), 0, 20);
+                    PlayerOilProducerManager.AddCoolTimeTask(player.getUniqueId(),task);
                     player.sendMessage(ChatColor.GREEN + "석유 생성기가 가동되었습니다. 30분 후에 석유가 생성됩니다."); //후차에 석유 생성기가 가동중일 때, 석유를 못넣게 해야함. 혹은 자동으로 석탄이 있으면 빨아먹게 하던지
                     player.sendMessage(ChatColor.GRAY + "(30분 후에 플레이어가 접속되어 있지 않는 경우 석유를 받지 못합니다.)");
                 }

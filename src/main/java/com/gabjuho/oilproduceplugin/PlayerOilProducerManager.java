@@ -12,8 +12,7 @@ public class PlayerOilProducerManager {
 
     private PlayerOilProducerManager(){
     }
-    public static void ConsumingOilCoolTime(Player player){
-        UUID uuid = player.getUniqueId();
+    public static void ConsumingOilCoolTime(UUID uuid){
         int coolTime = oilCoolTime.get(uuid);
 
         if(coolTime == 0){
@@ -22,7 +21,6 @@ public class PlayerOilProducerManager {
             oilCoolTime.remove(uuid);
             return;
         }
-        player.sendMessage(""+coolTime);
         coolTime -= 1;
         oilCoolTime.put(uuid,coolTime);
     }
@@ -30,8 +28,7 @@ public class PlayerOilProducerManager {
         UUID uuid = player.getUniqueId();
         oilCoolTime.put(uuid,10);
     }
-    public static void AddCoolTimeTask(Player player,BukkitTask task){
-        UUID uuid = player.getUniqueId();
+    public static void AddCoolTimeTask(UUID uuid,BukkitTask task){
         coolTimeTask.put(uuid,task);
     }
 
