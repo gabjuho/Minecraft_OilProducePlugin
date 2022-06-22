@@ -35,7 +35,7 @@ public class PlayerOilProducerManager {
                 if (player != null) {
                     ItemStack oil = new ItemStack(Material.COAL);
                     ItemMeta oilMeta = oil.getItemMeta();
-                    oilMeta.setDisplayName("석유");
+                    oilMeta.setDisplayName(ChatColor.YELLOW + "석유");
                     oil.setItemMeta(oilMeta);
                     Inventory inv = player.getInventory();
                     boolean isEmpty = false;
