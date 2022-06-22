@@ -7,3 +7,6 @@ commands:
   석유시간:
     description: 석유 생성까지 남은 시간을 알려주는 커맨드
     usage: /<command>
+  석유위치:
+    description: 석유 생성기의 위치를 XYZ 좌표로 표시해주는 커맨드
+    usage: /<command>

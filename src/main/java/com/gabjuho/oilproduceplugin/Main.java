@@ -26,6 +26,7 @@ public class Main extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new Event(), this);
         getCommand("석유시간").setExecutor(new Command());
+        getCommand("석유위치").setExecutor(new Command());
 
         getServer().getConsoleSender().sendMessage(ChatColor.GREEN + "[OilProducePlugin]: Plugin is enabled!");
     }
