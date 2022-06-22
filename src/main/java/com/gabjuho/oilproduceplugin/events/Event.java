@@ -1,9 +1,9 @@
 package com.gabjuho.oilproduceplugin.events;
 
 import com.gabjuho.oilproduceplugin.Main;
+import com.gabjuho.oilproduceplugin.PlayerOilProducerManager;
 import com.gabjuho.oilproduceplugin.YamlManager;
 import org.bukkit.*;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,8 +12,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
 
-import java.util.List;
 import java.util.Objects;
 
 public class Event implements Listener {
@@ -70,9 +70,14 @@ public class Event implements Listener {
 
         if(event.getClickedInventory().getType() == InventoryType.HOPPER && event.getCursor().getType() == Material.COAL){
             if(Objects.equals(yamlManager.getLoc().getLocation(player.getUniqueId().toString()), event.getClickedInventory().getLocation())){
-                Bukkit.getScheduler().runTask(Main.getPlugin(Main.class),()->useCoalInOilProducer(event.getClickedInventory()));
-                player.sendMessage(ChatColor.GREEN + "석유 생성기가 가동되었습니다. 30분 후에 석유가 생성됩니다."); //후차에 석유 생성기가 가동중일 때, 석유를 못넣게 해야함. 혹은 자동으로 석탄이 있으면 빨아먹게 하던지
-                player.sendMessage(ChatColor.GRAY + "(30분 후에 플레이어가 접속되어 있지 않는 경우 석유를 받지 못합니다.)");
+                if(!PlayerOilProducerManager.getOilCoolTime().containsKey(player)) {
+                    Bukkit.getScheduler().runTask(Main.getPlugin(Main.class),()->useCoalInOilProducer(event.getClickedInventory()));
+                    PlayerOilProducerManager.AddOilCoolTime(player);
+                    BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getPlugin(Main.class), () -> PlayerOilProducerManager.ConsumingOilCoolTime(player), 0, 20);
+                    PlayerOilProducerManager.AddCoolTimeTask(player,task);
+                    player.sendMessage(ChatColor.GREEN + "석유 생성기가 가동되었습니다. 30분 후에 석유가 생성됩니다."); //후차에 석유 생성기가 가동중일 때, 석유를 못넣게 해야함. 혹은 자동으로 석탄이 있으면 빨아먹게 하던지
+                    player.sendMessage(ChatColor.GRAY + "(30분 후에 플레이어가 접속되어 있지 않는 경우 석유를 받지 못합니다.)");
+                }
             }
         }
     }
