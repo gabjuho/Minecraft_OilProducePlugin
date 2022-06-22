@@ -68,7 +68,7 @@ public class Event implements Listener {
         if(event.getCursor() == null || event.getClickedInventory() == null)
             return;
 
-        if(event.getClickedInventory().getType() == InventoryType.HOPPER && event.getCursor().getType() == Material.COAL){
+        if(event.getClickedInventory().getType() == InventoryType.HOPPER && event.getCursor().getType() == Material.COAL && event.getCursor().getAmount() == 1 && !event.getCursor().hasItemMeta()){
             if(Objects.equals(yamlManager.getLoc().getLocation(player.getUniqueId().toString()), event.getClickedInventory().getLocation())){
                 if(!PlayerOilProducerManager.getOilCoolTime().containsKey(player.getUniqueId())) {
                     Bukkit.getScheduler().runTask(Main.getPlugin(Main.class),()->useCoalInOilProducer(event.getClickedInventory()));
@@ -79,6 +79,10 @@ public class Event implements Listener {
                     player.sendMessage(ChatColor.GRAY + "(30분 후에 플레이어가 접속되어 있지 않는 경우 석유를 받지 못합니다.)");
                 }
             }
+        }
+        else if(event.getClickedInventory().getType() == InventoryType.HOPPER && event.getCursor().getType() == Material.COAL && event.getCursor().getAmount() != 1 && !event.getCursor().hasItemMeta()) {
+            event.setCancelled(true);
+            player.sendMessage(ChatColor.RED + "석유를 하나만 넣어주세요.");
         }
     }
 
