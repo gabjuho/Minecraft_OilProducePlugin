@@ -14,14 +14,24 @@ public class YamlManager {
     private static YamlManager instance = new YamlManager(Main.getPlugin(Main.class)); //yaml 매니저는 싱글톤으로 생성
     private FileConfiguration loc = null;
     private FileConfiguration coolTime = null;
+    private FileConfiguration offlineOilList = null;
     private File locFile = null;
     private File coolTimeFile = null;
+    private File offlineOilListFile = null;
 
     private YamlManager(Main plugin) // 생성자 막아놓음 (싱글톤 패턴으로 인한)
     {
         this.plugin = plugin;
         saveDefaultLoc();
         saveDefaultCoolTime();
+        saveDefaultOfflineOilList();
+    }
+
+    public static YamlManager getInstance() // 싱글톤 인스턴스 반환
+    {
+        if(instance == null)
+            instance = new YamlManager(Main.getPlugin(Main.class));
+        return instance;
     }
 
     public void reloadLoc() // 데이터 리로드
@@ -52,11 +62,18 @@ public class YamlManager {
         }
     }
 
-    public static YamlManager getInstance() // 싱글톤 인스턴스 반환
+    public void reloadOfflineOilList() // 데이터 리로드
     {
-        if(instance == null)
-            instance = new YamlManager(Main.getPlugin(Main.class));
-        return instance;
+        if(this.offlineOilListFile == null)
+            this.offlineOilListFile = new File(this.plugin.getDataFolder(), "offlineOilList.yml");
+
+        this.offlineOilList = YamlConfiguration.loadConfiguration(this.offlineOilListFile);
+        InputStream defaultStream = this.plugin.getResource("offlineOilList.yml");
+        if(defaultStream != null)
+        {
+            YamlConfiguration defaultConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defaultStream));
+            this.offlineOilList.setDefaults(defaultConfig);
+        }
     }
 
     public FileConfiguration getLoc()
@@ -75,6 +92,14 @@ public class YamlManager {
         return this.coolTime;
     }
 
+    public FileConfiguration getOfflineOilList()
+    {
+        if(this.offlineOilList == null)
+            reloadOfflineOilList();
+
+        return this.offlineOilList;
+    }
+
     public void saveLoc() // 데이터 저장
     {
         if(this.loc == null || this.locFile == null)
@@ -88,6 +113,7 @@ public class YamlManager {
             plugin.getLogger().log(Level.SEVERE,"data 파일이 저장되지 않았습니다. -> " + this.locFile,e);
         }
     }
+
     public void saveCoolTime() // 데이터 저장
     {
         if(this.coolTime == null || this.coolTimeFile == null)
@@ -99,6 +125,20 @@ public class YamlManager {
         }catch(IOException e)
         {
             plugin.getLogger().log(Level.SEVERE,"data 파일이 저장되지 않았습니다. -> " + this.coolTimeFile,e);
+        }
+    }
+
+    public void saveOfflineOilList() // 데이터 저장
+    {
+        if(this.offlineOilList == null || this.offlineOilListFile == null)
+            return;
+
+        try
+        {
+            this.getOfflineOilList().save(this.offlineOilListFile);
+        }catch(IOException e)
+        {
+            plugin.getLogger().log(Level.SEVERE,"data 파일이 저장되지 않았습니다. -> " + this.offlineOilListFile,e);
         }
     }
 
@@ -121,6 +161,17 @@ public class YamlManager {
         if(!this.coolTimeFile.exists())
         {
             this.plugin.saveResource("coolTime.yml",false);
+        }
+    }
+
+    public void saveDefaultOfflineOilList() // 데이터 디폴트 저장
+    {
+        if(this.offlineOilListFile == null)
+            this.offlineOilListFile = new File(this.plugin.getDataFolder(), "offlineOilList.yml");
+
+        if(!this.offlineOilListFile.exists())
+        {
+            this.plugin.saveResource("offlineOilList.yml",false);
         }
     }
 
