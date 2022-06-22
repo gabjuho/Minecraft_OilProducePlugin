@@ -70,7 +70,7 @@ public class Event implements Listener {
 
         if(event.getClickedInventory().getType() == InventoryType.HOPPER && event.getCursor().getType() == Material.COAL){
             if(Objects.equals(yamlManager.getLoc().getLocation(player.getUniqueId().toString()), event.getClickedInventory().getLocation())){
-                if(!PlayerOilProducerManager.getOilCoolTime().containsKey(player)) {
+                if(!PlayerOilProducerManager.getOilCoolTime().containsKey(player.getUniqueId())) {
                     Bukkit.getScheduler().runTask(Main.getPlugin(Main.class),()->useCoalInOilProducer(event.getClickedInventory()));
                     PlayerOilProducerManager.AddOilCoolTime(player);
                     BukkitTask task = Bukkit.getScheduler().runTaskTimerAsynchronously(Main.getPlugin(Main.class), () -> PlayerOilProducerManager.ConsumingOilCoolTime(player), 0, 20);
