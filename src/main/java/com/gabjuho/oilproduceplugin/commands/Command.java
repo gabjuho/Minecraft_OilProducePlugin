@@ -19,8 +19,12 @@ public class Command implements CommandExecutor {
         Player player = (Player) sender;
 
         if (cmd.getName().equalsIgnoreCase("석유시간")) {
-            if (PlayerOilProducerManager.getOilCoolTime().containsKey(player.getUniqueId()))
-                player.sendMessage(ChatColor.GRAY + player.getName() + "님의 석유 생성시간 까지 " + PlayerOilProducerManager.getOilCoolTime().get(player.getUniqueId()) + "초 남았습니다.");
+            if (PlayerOilProducerManager.getOilCoolTime().containsKey(player.getUniqueId())) {
+                int sec = PlayerOilProducerManager.getOilCoolTime().get(player.getUniqueId());
+                int minute = sec/60;
+                sec = sec % 60;
+                player.sendMessage(ChatColor.GRAY + player.getName() + "님의 석유 생성시간 까지 " + minute +"분 "+ sec + "초 남았습니다.");
+            }
             else
                 player.sendMessage(ChatColor.RED + "현재 가동하고 있는 석유 생성기가 존재하지 않습니다.");
         }
