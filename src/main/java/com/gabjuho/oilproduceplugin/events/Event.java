@@ -37,7 +37,7 @@ public class Event implements Listener {
         World world = player.getWorld();
         Location loc1 = null, loc2 = null, loc3 = null, loc4 = null;
 
-        if (!player.getWorld().getName().equals("world")) //후차에 변경해야함.
+        if (!player.getWorld().getName().equals("abcd")) //후차에 변경해야함.
             return;
 
         if (event.getBlock().getType() == Material.CRAFTING_TABLE) {

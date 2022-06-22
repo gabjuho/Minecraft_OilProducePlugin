@@ -73,7 +73,7 @@ public class PlayerOilProducerManager {
 
     public static void AddOilCoolTime(Player player) {
         UUID uuid = player.getUniqueId();
-        oilCoolTime.put(uuid, 10);
+        oilCoolTime.put(uuid, 1800);
     }
 
     public static void AddCoolTimeTask(UUID uuid, BukkitTask task) {
