@@ -59,7 +59,7 @@ public class Event implements Listener {
         if (loc1 == null)
             return;
 
-        if (loc1.getBlock().getType() == Material.CRAFTING_TABLE && loc2.getBlock().getType() == Material.DROPPER && loc3.getBlock().getType() == Material.HOPPER && loc4.getBlock().getType() == Material.BEDROCK) {
+        if (loc1.getBlock().getType() == Material.CRAFTING_TABLE && loc2.getBlock().getType() == Material.DROPPER && loc3.getBlock().getType() == Material.HOPPER && loc4.getBlock().getType() == Material.BEDROCK && loc4.getBlockY() >= 10) {
             if (yamlManager.getLoc().contains(player.getUniqueId().toString())) {
                 player.sendMessage(ChatColor.RED + "이미 소유하고 있는 석유 생성기가 있습니다.");
                 event.setCancelled(true);
